@@ -1,0 +1,23 @@
+﻿@using AutofacMvcCore.Services
+@using Microsoft.AspNetCore.Hosting
+@inject IMessageService MessageService
+@inject IHostingEnvironment HostingEnvironment
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>title</title>
+</head>
+<body>
+    <div>
+        <P>@MessageService.GetMsg()</P>
+        <p>@HostingEnvironment.ApplicationName</p>
+        <p>@HostingEnvironment.ContentRootFileProvider.ToString()</p>
+        <p>@HostingEnvironment.ContentRootPath</p>
+        <p>@HostingEnvironment.EnvironmentName</p>
+        <p>@HostingEnvironment.WebRootFileProvider.ToString()</p>
+        <p>@HostingEnvironment.WebRootPath</p>
+    </div>
+</body>
+</html>

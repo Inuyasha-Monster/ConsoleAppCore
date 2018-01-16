@@ -1,0 +1,23 @@
+﻿@using Microsoft.Extensions.Options
+@using OptionBind
+@inject IOptionsSnapshot<ClassTest> ClassAccesser
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>title</title>
+</head>
+<body>
+    <div>
+        <p>@ClassAccesser.Value.ClassName</p>
+        <p>@ClassAccesser.Value.No</p>
+
+        @foreach (var temp in ClassAccesser.Value.Students)
+        {
+            <P>@temp.Name</P>
+            <P>@temp.Age</P>
+        }
+    </div>
+</body>
+</html>
