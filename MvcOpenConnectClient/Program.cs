@@ -18,7 +18,7 @@ namespace MvcOpenConnectClient
         }
 
         public static IWebHost BuildWebHost(string[] args) =>
-            WebHost.CreateDefaultBuilder(args)
+            WebHost.CreateDefaultBuilder(args).UseUrls("http://localhost:5002")
                 .UseStartup<Startup>()
                 .Build();
     }
