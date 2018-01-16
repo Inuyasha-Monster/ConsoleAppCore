@@ -27,28 +27,44 @@ namespace CookieAuthDemo
         public void ConfigureServices(IServiceCollection services)
         {
 
-            services.AddDbContext<ApplicationDbContext>(x =>
-            {
-                x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
-            });
+            #region CookieAuth
 
-            services.AddIdentity<ApplicationUser, ApplicationUserRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
+            //services.AddDbContext<ApplicationDbContext>(x =>
+            //{
+            //    x.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            //});
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(x =>
-                {
-                    x.LoginPath = "/Account/Login";
-                });
+            //services.AddIdentity<ApplicationUser, ApplicationUserRole>()
+            //    .AddEntityFrameworkStores<ApplicationDbContext>()
+            //    .AddDefaultTokenProviders();
 
-            services.Configure<IdentityOptions>(x =>
-            {
-                x.Password.RequireLowercase = true;
-                x.Password.RequireNonAlphanumeric = true;
-                x.Password.RequireUppercase = true;
-                x.Password.RequiredLength = 8;
-            });
+            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            //    .AddCookie(x =>
+            //    {
+            //        x.LoginPath = "/Account/Login";
+            //    });
+
+            //services.Configure<IdentityOptions>(x =>
+            //{
+            //    x.Password.RequireLowercase = true;
+            //    x.Password.RequireNonAlphanumeric = true;
+            //    x.Password.RequireUppercase = true;
+            //    x.Password.RequiredLength = 8;
+            //});
+
+            #endregion
+
+
+            #region IdentityServer4
+
+            services.AddIdentityServer()
+                .AddDeveloperSigningCredential()
+                .AddInMemoryClients(Config.GetClients())
+                .AddInMemoryApiResources(Config.GetApiResources())
+                .AddTestUsers(Config.GetTestUsers())
+                .AddInMemoryIdentityResources(Config.GetIdentityResources());
+
+            #endregion
 
             services.AddMvc();
         }
@@ -68,7 +84,9 @@ namespace CookieAuthDemo
 
             app.UseStaticFiles();
 
-            app.UseAuthentication();
+            //app.UseAuthentication();
+
+            app.UseIdentityServer();
 
             app.UseMvc(routes =>
             {

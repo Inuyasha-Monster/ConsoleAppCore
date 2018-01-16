@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CookieAuthDemo", "CookieAut
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JwtAuthApiDemo", "JwtAuthApiDemo\JwtAuthApiDemo.csproj", "{E005F040-E8A7-457C-BA7F-0AD4E8E21B5E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcOpenConnectClient", "MvcOpenConnectClient\MvcOpenConnectClient.csproj", "{FBB1EFA0-6AC1-4147-962E-9B6DCFEC54B2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{E005F040-E8A7-457C-BA7F-0AD4E8E21B5E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E005F040-E8A7-457C-BA7F-0AD4E8E21B5E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E005F040-E8A7-457C-BA7F-0AD4E8E21B5E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBB1EFA0-6AC1-4147-962E-9B6DCFEC54B2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBB1EFA0-6AC1-4147-962E-9B6DCFEC54B2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBB1EFA0-6AC1-4147-962E-9B6DCFEC54B2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBB1EFA0-6AC1-4147-962E-9B6DCFEC54B2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

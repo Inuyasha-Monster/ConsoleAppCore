@@ -21,39 +21,39 @@ namespace CookieAuthDemo
         {
             var host = BuildWebHost(args);
 
-            using (var scope = host.Services.CreateScope())
-            {
-                var services = scope.ServiceProvider;
+            //using (var scope = host.Services.CreateScope())
+            //{
+            //    var services = scope.ServiceProvider;
 
-                var dbContext = services.GetRequiredService<ApplicationDbContext>();
+            //    var dbContext = services.GetRequiredService<ApplicationDbContext>();
 
-                var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+            //    var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
 
-                try
-                {
-                    dbContext.Database.Migrate();
-                    if (!dbContext.Users.Any())
-                    {
-                        var user = new ApplicationUser()
-                        {
-                            UserName = "djlnet",
-                            Email = "394922860@qq.com",
-                            NormalizedEmail = "admin"
-                        };
-                        var result = userManager.CreateAsync(user, "Djl394922860=").Result;
-                        if (!result.Succeeded)
-                        {
-                            throw new Exception("default user init error:" + result.Errors.Select(x => x.Description).Aggregate((x, y) => $"{x} {y}"));
-                        }
-                    }
+            //    try
+            //    {
+            //        dbContext.Database.Migrate();
+            //        if (!dbContext.Users.Any())
+            //        {
+            //            var user = new ApplicationUser()
+            //            {
+            //                UserName = "djlnet",
+            //                Email = "394922860@qq.com",
+            //                NormalizedEmail = "admin"
+            //            };
+            //            var result = userManager.CreateAsync(user, "Djl394922860=").Result;
+            //            if (!result.Succeeded)
+            //            {
+            //                throw new Exception("default user init error:" + result.Errors.Select(x => x.Description).Aggregate((x, y) => $"{x} {y}"));
+            //            }
+            //        }
 
-                }
-                catch (Exception ex)
-                {
-                    var logger = services.GetRequiredService<ILogger<Program>>();
-                    logger.LogError(ex, "An error occurred seeding the DB.");
-                }
-            }
+            //    }
+            //    catch (Exception ex)
+            //    {
+            //        var logger = services.GetRequiredService<ILogger<Program>>();
+            //        logger.LogError(ex, "An error occurred seeding the DB.");
+            //    }
+            //}
 
             host.Run();
         }

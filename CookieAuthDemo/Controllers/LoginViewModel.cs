@@ -4,9 +4,8 @@ namespace CookieAuthDemo.Controllers
 {
     public class LoginViewModel
     {
-        [EmailAddress]
         [Required]
-        public string Email { get; set; }
+        public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

@@ -4,8 +4,10 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using CookieAuthDemo.Models;
+using IdentityServer4.Test;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,9 +17,15 @@ namespace CookieAuthDemo.Controllers
 {
     public class AccountController : Controller
     {
-        private readonly UserManager<ApplicationUser> _userManager;
-        private readonly SignInManager<ApplicationUser> _signInManager;
+        //private readonly UserManager<ApplicationUser> _userManager;
+        //private readonly SignInManager<ApplicationUser> _signInManager;
 
+        private readonly TestUserStore _testUserStore;
+
+        public AccountController(TestUserStore testUserStore)
+        {
+            this._testUserStore = testUserStore;
+        }
 
         private IActionResult RedirectToLocal(string returnUrl)
         {
@@ -31,11 +39,11 @@ namespace CookieAuthDemo.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
-        {
-            _userManager = userManager;
-            _signInManager = signInManager;
-        }
+        //public AccountController(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager)
+        //{
+        //    _userManager = userManager;
+        //    _signInManager = signInManager;
+        //}
 
         [HttpGet]
         public IActionResult Register(string returnUrl = null)
@@ -45,31 +53,31 @@ namespace CookieAuthDemo.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Register(RegisterViewModel model, string returnUrl = null)
+        public IActionResult Register(RegisterViewModel model, string returnUrl = null)
         {
-            if (ModelState.IsValid)
-            {
-                var user = new ApplicationUser()
-                {
-                    Email = model.Email,
-                    UserName = model.Email,
-                    NormalizedEmail = model.Email
-                };
+            //if (ModelState.IsValid)
+            //{
+            //    var user = new ApplicationUser()
+            //    {
+            //        Email = model.Email,
+            //        UserName = model.Email,
+            //        NormalizedEmail = model.Email
+            //    };
 
-                var result = await _userManager.CreateAsync(user, model.Password);
+            //    var result = await _userManager.CreateAsync(user, model.Password);
 
-                if (result.Succeeded)
-                {
-                    await _signInManager.SignInAsync(user, true);
+            //    if (result.Succeeded)
+            //    {
+            //        await _signInManager.SignInAsync(user, true);
 
-                    //return RedirectToAction("Index", "Home");
-                    return RedirectToLocal(returnUrl);
-                }
-                else
-                {
-                    result.Errors.ToList().ForEach(x => ModelState.AddModelError(string.Empty, x.Description));
-                }
-            }
+            //        //return RedirectToAction("Index", "Home");
+            //        return RedirectToLocal(returnUrl);
+            //    }
+            //    else
+            //    {
+            //        result.Errors.ToList().ForEach(x => ModelState.AddModelError(string.Empty, x.Description));
+            //    }
+            //}
 
 
             return View();
@@ -87,19 +95,33 @@ namespace CookieAuthDemo.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = await _userManager.FindByEmailAsync(model.Email);
+
+                var user = _testUserStore.FindByUsername(model.UserName);
+
+
+                //var user = await _userManager.FindByEmailAsync(model.Email);
 
                 if (user == null)
                 {
-                    ModelState.AddModelError(string.Empty, "Sorry, Can not find the user by this email !");
+                    ModelState.AddModelError(string.Empty, "Sorry, Can not find the user by this username !");
                 }
                 else
                 {
-                    var result = await _userManager.CheckPasswordAsync(user, model.Password);
+                    var result = _testUserStore.ValidateCredentials(model.UserName, model.Password);
+
+                    //var result = await _userManager.CheckPasswordAsync(user, model.Password);
                     if (result)
                     {
 
-                        await _signInManager.SignInAsync(user, new AuthenticationProperties() { IsPersistent = true });
+                        //await _signInManager.SignInAsync(user, new AuthenticationProperties() { IsPersistent = true });
+
+                        var prop = new AuthenticationProperties()
+                        {
+                            IsPersistent = true,
+                            ExpiresUtc = DateTimeOffset.UtcNow.Add(TimeSpan.FromMinutes(30))
+                        };
+
+                        await HttpContext.SignInAsync(user.SubjectId, user.Username, prop);
 
                         //return RedirectToAction("Index", "Home");
                         return RedirectToLocal(returnUrl);
@@ -134,8 +156,8 @@ namespace CookieAuthDemo.Controllers
 
         public async Task<IActionResult> Logout()
         {
-            await _signInManager.SignOutAsync();
-            //HttpContext.SignOutAsync();
+            //await _signInManager.SignOutAsync();
+            await HttpContext.SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
     }
