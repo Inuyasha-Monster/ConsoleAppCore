@@ -19,6 +19,12 @@ namespace CookieAuthDemo
                 {
                     ClientId = "mvc",
                     ClientName = "mvc Client",
+                    ClientUri="http://localhost:5002",
+
+                    LogoUri = "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2904524590,3613205869&fm=27&gp=0.jpg",
+
+                    AllowRememberConsent = true,
+
                     AllowedGrantTypes = GrantTypes.Implicit,
                     ClientSecrets = new List<Secret>()
                     {
@@ -27,11 +33,13 @@ namespace CookieAuthDemo
                     AllowedScopes = new List<string>()
                     {
                         IdentityServerConstants.StandardScopes.Profile,
-                        IdentityServerConstants.StandardScopes.OpenId
+                        IdentityServerConstants.StandardScopes.OpenId,
+                        IdentityServerConstants.StandardScopes.Email
                     },
                     RedirectUris = {"http://localhost:5002/signin-oidc"},
                     PostLogoutRedirectUris = {"http://localhost:5002/signout-callback-oidc"},
-                    RequireConsent = false
+                    //RequireConsent = false
+                    RequireConsent = true
                 }
             };
         }
@@ -52,8 +60,8 @@ namespace CookieAuthDemo
                 {
                     SubjectId = "10000",
                     Username = "djlnet",
-                    Password = "123456",
-
+                    Password = "111111",
+                    
                     Claims = new []
                     {
                         new Claim("name", "djlnet"),
@@ -64,7 +72,7 @@ namespace CookieAuthDemo
                 {
                     SubjectId = "2",
                     Username = "fuck",
-                    Password = "123456",
+                    Password = "111111",
                     Claims = new []
                     {
                         new Claim("name", "fuck"),

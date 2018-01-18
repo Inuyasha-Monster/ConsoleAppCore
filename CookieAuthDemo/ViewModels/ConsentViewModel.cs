@@ -9,6 +9,8 @@ namespace CookieAuthDemo.ViewModels
     {
         public string ClientId { get; set; }
         public string ClientName { get; set; }
+
+        public string ClientUrl { get; set; }
         public string ClientLogoUrl { get; set; }
         public bool AllowRememberConsent { get; set; }
 
