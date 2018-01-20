@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CookieAuthDemo.Data;
 using CookieAuthDemo.Models;
+using CookieAuthDemo.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -54,6 +55,8 @@ namespace CookieAuthDemo
 
             #endregion
 
+
+            services.AddScoped<ConsenService>();
 
             #region IdentityServer4
 
