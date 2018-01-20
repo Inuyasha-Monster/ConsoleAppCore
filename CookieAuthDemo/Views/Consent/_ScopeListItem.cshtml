@@ -7,6 +7,13 @@
                id="scopes_@Model.Name"
                value="@Model.Checked"
                disabled="@Model.Required"/>
+        
+        
+        @if (Model.Required)
+        {
+            <input type="hidden" name="ScopesConsented" value="@Model.Name" />
+        }
+
         <strong> @Model.Name</strong>
         @if (Model.Emphasize)
         {
