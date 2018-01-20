@@ -1,5 +1,22 @@
 ﻿@model CookieAuthDemo.ViewModels.ScopeViewModel
 
 <li>
-    @($"Name:{Model.Name} DisplayName:{Model.DisplayName}")
+    <label>
+        <input type="checkbox"
+               name="ScopesConsented"
+               id="scopes_@Model.Name"
+               value="@Model.Checked"
+               disabled="@Model.Required"/>
+        <strong> @Model.Name</strong>
+        @if (Model.Emphasize)
+        {
+            <span class="glyphicon glyphicon-exclamation-sign"></span>
+        }
+    </label>
+    @if (string.IsNullOrEmpty(Model.Description))
+    {
+        <div>
+            <label for="scopes_@Model.Name">@Model.Description</label>
+        </div>
+    }
 </li>

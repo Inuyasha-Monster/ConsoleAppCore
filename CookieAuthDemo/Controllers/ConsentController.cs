@@ -43,7 +43,7 @@ namespace CookieAuthDemo.Controllers
             vm.ClientId = client.ClientId;
             vm.ClientLogoUrl = client.LogoUri;
             vm.ClientUrl = client.ClientUri;
-            vm.AllowRememberConsent = client.AllowRememberConsent;
+            vm.RememberConsent = client.AllowRememberConsent;
             vm.IdentityScopes = resources.IdentityResources.Select(CreateScopeViewModel);
             vm.ResourceScopes = resources.ApiResources.SelectMany(x => x.Scopes).Select(CreateScopeViewModel);
             return vm;
@@ -83,10 +83,43 @@ namespace CookieAuthDemo.Controllers
 
             if (model == null)
             {
-                
+                return BadRequest();
+            }
+            model.ReturnUrl = returnUrl;
+            return View(model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Index(InputConsentViewModel viewModel)
+        {
+            ConsentResponse consentResponse = null;
+            if (viewModel.Button == "no")
+            {
+                consentResponse = ConsentResponse.Denied;
+            }
+            else if (viewModel.Button == "yes")
+            {
+                if (viewModel.ScopesConsented != null && viewModel.ScopesConsented.Any())
+                {
+                    consentResponse = new ConsentResponse()
+                    {
+                        ScopesConsented = viewModel.ScopesConsented,
+                        RememberConsent = viewModel.RememberConsent
+                    };
+                }
             }
 
-            return View(model);
+            if (consentResponse != null)
+            {
+                var request = await _identityServerInteractionService.GetAuthorizationContextAsync(viewModel.ReturnUrl);
+                await _identityServerInteractionService.GrantConsentAsync(request, consentResponse);
+
+                return Redirect(viewModel.ReturnUrl);
+            }
+            else
+            {
+                return View();
+            }
         }
     }
 }

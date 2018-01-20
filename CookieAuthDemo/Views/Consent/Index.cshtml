@@ -25,6 +25,7 @@
 <div class="row">
     <div class="col-sm-8">
         <form asp-action="Index">
+            <input type="hidden" asp-for="ReturnUrl"/>
             @if (Model.IdentityScopes.Any())
             {
                 <div class="panel">
@@ -55,11 +56,18 @@
                     }
                 </ul>
             }
-            
+
             
             <div>
-                <button type="button" value="yes" class="btn btn-primary" autofocus>同意</button>
-                <button value="no" type="button" class="btn btn-default">取消</button>
+                <label>
+                    <input type="checkbox" asp-for="RememberConsent"/>
+                    <strong>记住我的选择</strong>
+                </label>
+            </div>
+
+            <div>
+                <button name="Button" value="yes" class="btn btn-primary" autofocus>同意</button>
+                <button value="no" name="Button" class="btn btn-default">取消</button>
                 @if (!string.IsNullOrWhiteSpace(Model.ClientUrl))
                 {
                     <a>
