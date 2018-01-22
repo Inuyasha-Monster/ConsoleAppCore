@@ -24,13 +24,9 @@
 
 <div class="row">
     <div class="col-sm-8">
+        <div asp-validation-summary="All" class="danger"></div>
         <form asp-action="Index">
             <input type="hidden" asp-for="ReturnUrl"/>
-            
-            <div class="alert alert-danger">
-                <strong>Error:</strong>
-                <div asp-validation-summary="All" class="danger"></div>
-            </div>
 
             @if (Model.IdentityScopes.Any())
             {
@@ -63,7 +59,7 @@
                 </ul>
             }
 
-            
+
             <div>
                 <label>
                     <input type="checkbox" asp-for="RememberConsent"/>
